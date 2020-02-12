@@ -2,7 +2,7 @@
 // setting requirments to variables
 const express = require ("express");
 const mongoose = require ("mongoose");
-const handlebars = require ("express-handlebars");
+const exphbs = require ("express-handlebars");
 
 const axios = require ("axios");
 const cheerio = require ("cheerio");
