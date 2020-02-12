@@ -31,9 +31,13 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 
 mongoose.connect(MONGODB_URI);
 
+  app.get("/", function(req, res) {
+    res.render("index.handlebars",res)
+  });
+
 /////////////routes 
-require("./routes/htmlRoutes.js")(app);
-require("./routes/apiRoutes.js")(app);
+// require("./routes/htmlRoutes.js")(app);
+// require("./routes/apiRoutes.js")(app);
 
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function() {

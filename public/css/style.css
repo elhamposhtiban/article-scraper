@@ -1,0 +1,7 @@
+
+body {
+    height: 95vh;
+    background-image:linear-gradient(to right bottom, rgba(122, 146, 179, 0.658),rgba(20, 50, 93, 0.658)) , url(../img/coffee-cup-smartphone-notebook-97050.jpg);
+    background-size: cover;
+    background-position: top;
+}
