@@ -37,7 +37,7 @@ module.exports = function (app) {
               
             });
         });
-        res.redirect('/')
+        res.send("it is working !! yeaa")
     });
 
 
@@ -90,7 +90,7 @@ module.exports = function (app) {
         });
     });
 
-      // update articles here save : true
+      // update articles here save : false
       app.get("/articles/unsaved/:id", function(req, res) {
         
         db.Article.findOneAndUpdate
@@ -131,6 +131,7 @@ module.exports = function (app) {
     app.post("/articles/:id", function(req, res) {
         
         db.Note.create(req.body)
+
         .then(function(dbNote) {
 
             return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
@@ -144,6 +145,34 @@ module.exports = function (app) {
             res.json(err);
         });
     });
+
+    app.delete("/articles", function (req, res) {
+        db.Article.deleteMany({})
+          .then(function (dbArticle) {
+      
+            res.json(dbArticle);
+          })
+          .catch(function (err) {
+      
+            res.json(err);
+          });
+      
+      });
+      
+      app.delete("/note/:id", function (req, res) {
+        db.Note.deleteOne({
+            _id: req.params.id
+          })
+          .then(function (dbNote) {
+      
+            res.json(dbNote);
+          })
+          .catch(function (err) {
+      
+            res.json(err);
+          });
+      
+      });
 
 
 
