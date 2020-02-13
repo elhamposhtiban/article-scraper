@@ -37,7 +37,7 @@ module.exports = function (app) {
               
             });
         });
-        res.send("it's working yeaaaaa")
+        res.redirect('/')
     });
 
 
@@ -56,7 +56,7 @@ module.exports = function (app) {
     });
 
     // Route for getting  Articles that is saved from the db
-    app.get("/articles", function(req, res) {
+    app.get("/articles/saved", function(req, res) {
 
         db.Article.find({saved: true})
             .then(function(dbArticle) {
@@ -69,12 +69,17 @@ module.exports = function (app) {
             });
         });
 
-  // Route for grabbing a specific Article by id, populate it with it's note
-    app.get("/articles/:id", function(req, res) {
+  // update articles here save : true
+    app.get("/articles/saved/:id", function(req, res) {
         
-        db.Article.findOne({ _id: req.params.id })
-        
-        .populate("note")
+        db.Article.findOneAndUpdate
+        (
+            { _id: req.params.id },
+            {
+                $set: {
+                    saved:true}
+                 })
+    
         .then(function(dbArticle) {
         
             res.json(dbArticle);
@@ -84,6 +89,43 @@ module.exports = function (app) {
             res.json(err);
         });
     });
+
+      // update articles here save : true
+      app.get("/articles/unsaved/:id", function(req, res) {
+        
+        db.Article.findOneAndUpdate
+        (
+            { _id: req.params.id },
+            {
+                $set: {
+                    saved:false}
+                 })
+    
+        .then(function(dbArticle) {
+        
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            
+            res.json(err);
+        });
+    });
+
+    app.get("/articles/:id", function(req, res) {
+    
+        db.Article.findOne({ _id: req.params.id })
+         
+          .populate("note")
+          .then(function(dbArticle) {
+           
+            res.json(dbArticle);
+          })
+          .catch(function(err) {
+            
+            res.json(err);
+          });
+      });
+      
     
     // Route for saving/updating an Article's associated Note
     app.post("/articles/:id", function(req, res) {
