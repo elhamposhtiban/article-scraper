@@ -21,7 +21,7 @@ module.exports = function (app) {
                  // Add the text, summary, image and href of every link, and save them as properties of the result object
                 result.title = $(this).children("h4").children("a").text();
                 result.link = $(this).children("h4").children("a").attr("href");
-                result.image = $(this).children(".image").children("a").children("picture").children("source").attr("srcset")
+                result.image = $(this).children(".image").children("a").children("picture.mapping-sm_thumb").attr("src")
                 result.summary = $(this).children(".summary").text();
 
                 console.log(result)
@@ -29,9 +29,8 @@ module.exports = function (app) {
                db.Article.create(result)
                .then( function(dbArticle) {
 
-                console.log("helooooo")
                 console.log(dbArticle)
-                
+
                }).catch(function (err) {
                 console.log(err)
               })
@@ -42,10 +41,10 @@ module.exports = function (app) {
     });
 
 
-    // Route for getting all Articles from the db
+    // Route for getting  Articles that is not saved from the db
     app.get("/articles", function(req, res) {
 
-    db.Article.find({})
+    db.Article.find({saved: false})
         .then(function(dbArticle) {
         
         res.json(dbArticle);
@@ -55,6 +54,20 @@ module.exports = function (app) {
         res.json(err);
         });
     });
+
+    // Route for getting  Articles that is saved from the db
+    app.get("/articles", function(req, res) {
+
+        db.Article.find({saved: true})
+            .then(function(dbArticle) {
+            
+            res.json(dbArticle);
+            })
+            .catch(function(err) {
+            
+            res.json(err);
+            });
+        });
 
   // Route for grabbing a specific Article by id, populate it with it's note
     app.get("/articles/:id", function(req, res) {

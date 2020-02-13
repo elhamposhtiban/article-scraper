@@ -1,7 +1,7 @@
 
 
 
-module.export = {
+module.exports = {
     Article: require("./Article"),
     Note: require("./Note")
 }
