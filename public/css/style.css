@@ -18,3 +18,7 @@ html, body {
     -o-background-size: cover;
     background-size: cover;
 }
+
+.jumbotron {
+    opacity: 0.6;
+}
