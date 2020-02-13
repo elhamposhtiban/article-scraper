@@ -7,9 +7,6 @@ const logger = require("morgan");
 const axios = require ("axios");
 const cheerio = require ("cheerio");
 
-// Require all models
-
-const db = require ("./models");
 
 // Set the port of our application
 const PORT = process.env.PORT || 2020;
@@ -33,7 +30,9 @@ app.use(express.static(__dirname +'/public'));
 // Connect to the Mongo DB
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true
+});
 
 // mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
 
@@ -48,3 +47,4 @@ app.listen(PORT, function() {
     console.log("Server listening on: http://localhost:" + PORT);
   });
 
+  mongoose.set('useCreateIndex', true)
