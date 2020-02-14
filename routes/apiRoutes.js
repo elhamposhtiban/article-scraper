@@ -29,7 +29,7 @@ module.exports = function (app) {
                db.Article.create(result)
                .then( function(dbArticle) {
 
-                console.log(dbArticle)
+                // console.log(dbArticle)
 
                }).catch(function (err) {
                 console.log(err)
@@ -46,6 +46,7 @@ module.exports = function (app) {
 
     db.Article.find({saved: false})
         .then(function(dbArticle) {
+            // console.log(dbArticle)
         
         res.json(dbArticle);
         })

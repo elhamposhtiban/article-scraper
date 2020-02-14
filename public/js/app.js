@@ -7,13 +7,13 @@ $.getJSON ("/articles", function(data) {
     $(".article-part").empty();
     for (let i=0; i<data.length; i++) {
         $(".article-part").append (
-            `<div class="card mt-4" data-id="${data[i]._id}>
+            `<div class="card mt-4" >
                 <div class="card-body">
                 <h5 class="card-title">${data[i].title}</h5>
                 <p class="card-text">${data[i].link}</p>
                 <br>
                 <p class="card-text">${data[i].summary}</p>
-                <button class="btn btn-success float-right">save article</button>
+                <button class="btn btn-success float-right" value=${data[i]._id}>save article</button>
             </div>`
 
         );
@@ -42,16 +42,18 @@ function showSavedArticles () {
         });
     }
 
-    showArticles()
+     showArticles()
 
     //show the articles
 $("#scrape-article").on("click", function (event) {
 
     console.log("i clicked")
     event.preventDefault();
-    showArticles()
-    
-    window.location.href = "/scrape"
+$.ajax({
+    method: "GET",
+    url:"/scrape"
+}).then( () => showArticles() )
+
     
 })
 
@@ -71,7 +73,7 @@ $("#clear-articles").on("click", function clearArticles(event) {
 $(".savedArticle-part").on("click", "#unsaved", function unsaveArticle(event) {
     
     event.preventDefault();
-    let thisId = $(this).attr("data-id");
+    let thisId = $(this).value()
     
 
     $.ajax({
@@ -84,21 +86,21 @@ $(".savedArticle-part").on("click", "#unsaved", function unsaveArticle(event) {
 
 
 
-// $(".article-part").on("click", "button", function showSavedArticles(event) {
+$(".article-part").on("click", "button", function showSavedArticles(event) {
     
-//     event.preventDefault();
-//     let thisId = $(this).attr("data-id");
+    event.preventDefault();
+    let thisId = $(this).attr("data-id");
     
+console.log( $(this))
+console.log(thisId)
+    $.ajax({
+        method: "PUT",
+        url: `/articles/${thisId}`
+    }).then(
+        showArticles()
+    )
 
-
-//     $.ajax({
-//         method: "PUT",
-//         url: `/articles/${thisId}`
-//     }).then(
-//         showArticles()
-//     )
-
-// })
+})
 
 //////////////////////// linking to the modal here 
 
