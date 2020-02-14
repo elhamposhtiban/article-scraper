@@ -30,8 +30,13 @@ app.use(express.static(__dirname +'/public'));
 // Connect to the Mongo DB
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,    
+  useCreateIndex: true
+});
 
+// mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
 
 
 /////////////routes 
@@ -44,6 +49,12 @@ app.listen(PORT, function() {
     console.log("Server listening on: http://localhost:" + PORT);
   });
 
+//   mongoose.set('useFindAndModify', false)
 
 
 
+mongoose.connection
+    .once('open', () => console.log('MongoDB is Connected in server.js'))
+    .on('error', (error) => {
+        console.log("The Error is", error)
+    });
