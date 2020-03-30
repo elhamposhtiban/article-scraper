@@ -36,7 +36,7 @@ mongoose.connect(MONGODB_URI, {
   useCreateIndex: true
 });
 
-// mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
+
 
 
 /////////////routes 
@@ -49,7 +49,7 @@ app.listen(PORT, function() {
     console.log("Server listening on: http://localhost:" + PORT);
   });
 
-//   mongoose.set('useFindAndModify', false)
+
 
 
 

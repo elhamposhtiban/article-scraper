@@ -1,4 +1,4 @@
-
+$(document).ready(showArticles());
 
 function showArticles () {
 
@@ -6,6 +6,7 @@ $.getJSON ("/articles", function(data) {
 
     $(".article-part").empty();
     for (let i=0; i<data.length; i++) {
+
         $(".article-part").append (
             `<div class="card mt-4" >
                 <div class="card-body">
@@ -13,7 +14,8 @@ $.getJSON ("/articles", function(data) {
                 <p class="card-text">${data[i].link}</p>
                 <br>
                 <p class="card-text">${data[i].summary}</p>
-                <button class="btn btn-success float-right" value=${data[i]._id}>save article</button>
+                <button type= "button"  class="btn btn-success float-right save-article-button" data-id=${data[i]._id}>save article</button>
+                </div>
             </div>`
 
         );
@@ -21,38 +23,18 @@ $.getJSON ("/articles", function(data) {
     });
 }
 
-function showSavedArticles () {
 
-    $.getJSON ("/articles/saved", function(data) {
-    
-        $(".savedArticle-part").empty();
-        for (let i=0; i<data.length; i++) {
-            $(".savedArticle-part").append (
-                `<div class="card mt-4" data-id=${data[i]._id}>
-                    <div class="card-body">
-                    <h5 class="card-title">${data[i].title}</h5>
-                    <p class="card-text">${data[i].link}</p>
-                    <br>
-                    <p class="card-text">${data[i].summary}</p>
-                    <button class="btn btn-success float-right shadow-button" id="unsaved" data-id="${data[i]._id}> leave a note</button>
-                    <button class="btn btn-danger float-right shadow-button" id="note-button" data-id="${data[i]._id}> remove from saved</button>
-                    </div>`
-            );
-        };
-        });
-    }
-
-     showArticles()
+    //  showArticles()
 
     //show the articles
 $("#scrape-article").on("click", function (event) {
 
     console.log("i clicked")
     event.preventDefault();
-$.ajax({
-    method: "GET",
-    url:"/scrape"
-}).then( () => showArticles() )
+    $.ajax({
+        method: "GET",
+        url:"/scrape"
+    }).then( () => showArticles() )
 
     
 })
@@ -70,36 +52,40 @@ $("#clear-articles").on("click", function clearArticles(event) {
     
 })
 
+
+
+
+
+$(document).on("click",".save-article-button", function showSavedArticles(event) {
+    console.log("i am clicking the save button of each article")
+    event.preventDefault();
+
+    let thisId = $(this).attr("data-id");
+    
+        console.log( $(this))
+        console.log(thisId)
+    $.ajax({
+        method: "POST",
+        url: `/articles/${thisId}`
+    }).then(
+        showArticles()
+    )
+
+})
+
+
+
 $(".savedArticle-part").on("click", "#unsaved", function unsaveArticle(event) {
     
     event.preventDefault();
-    let thisId = $(this).value()
+    let thisId = $(this).attr()
     
-
     $.ajax({
         method: "PUT",
         url: `/articles/unsaved/${thisId}`
     }).then(
              showSavedArticles()
     )
-})
-
-
-
-$(".article-part").on("click", "button", function showSavedArticles(event) {
-    
-    event.preventDefault();
-    let thisId = $(this).attr("data-id");
-    
-console.log( $(this))
-console.log(thisId)
-    $.ajax({
-        method: "PUT",
-        url: `/articles/${thisId}`
-    }).then(
-        showArticles()
-    )
-
 })
 
 //////////////////////// linking to the modal here 

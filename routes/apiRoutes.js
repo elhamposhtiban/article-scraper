@@ -19,21 +19,22 @@ module.exports = function (app) {
                 let result = {};
 
                  // Add the text, summary, image and href of every link, and save them as properties of the result object
-                result.title = $(this).children("h4").children("a").text();
-                result.link = $(this).children("h4").children("a").attr("href");
-                result.image = $(this).children(".image").children("a").children("picture.mapping-sm_thumb").attr("src")
-                result.summary = $(this).children(".summary").text();
+                result.title = $(element).children("h4").children("a").text();
+                result.link = $(element).children("h4").children("a").attr("href");
+                result.image = $(element).children(".image").children("a").children("picture.mapping-sm_thumb").attr("src")
+                result.summary = $(element).children(".summary").text();
 
                 console.log(result)
     
                db.Article.create(result)
                .then( function(dbArticle) {
 
-                // console.log(dbArticle)
+                 console.log(dbArticle)
 
-               }).catch(function (err) {
+               })
+              .catch(function (err) {
                 console.log(err)
-              })
+               })
               
             });
         });
@@ -178,3 +179,6 @@ module.exports = function (app) {
 
 
 }
+
+
+
